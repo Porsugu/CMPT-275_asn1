@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Gpa Histogram</title>
+  <style>
+    .area {
+        border: 1px solid white;
+        /* border: 1px solid #f30505; */
+        margin-right: 10px;
+        float: left;
+        width: 250px;
+        height: 400px;
+    }
+    
+    .left {
+        background-color: #e9eff1;
+    }
+
+    .top-right {
+        border: 1px solid #e9eff1;
+        height: 250px;
+        background-color: #e9eff1;
+    }
+    .top-rl{
+        border: 1px solid #e9eff1;
+        /* border: 1px solid #f30505; */
+        background-color: #e9eff1;
+        width:40%;
+        height: 100%;
+        float: left;
+    }
+    .top-rr{
+        border: 1px solid #e9eff1;
+        /* border: 1px solid #f30505; */
+        background-color: #e9eff1;
+        width:58%;
+        height: 100%;
+        float: left;
+    }
+    .bottom-right{
+        margin-top: 10px;
+        border: 1px solid #e9eff1;
+        height: 136px;
+        background-color: #e9eff1;
+    }
+    
+    .clearfix::after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+    .title{
+        position: relative;
+        color: rgb(196,18,46);
+        top: 0px;
+        left: 10px;
+        font-size:80%;
+        font-weight: bold;
+    }
+    .title2{
+        color: #e9eff1;
+        top: 0px;
+        left: 5px;
+        font-size:80%;
+        font-weight: bold;
+    }
+    .table{
+        position: relative;
+        left: 20px;
+        font-size:70%;
+        font-weight: bold;
+        width:110%;
+        text-align: left;
+    }
+    input{
+        text-align: center;
+        width: 75px;
+        font-size: 90%;
+        margin-top: 10px;
+    }
+    .newGrade{
+        text-align: center;
+        width: 75px;
+        height: 10px;
+    }
+    label{
+        margin-left: 10px;
+        font-size:75%;
+    }
+    .btn{
+        margin-left: 5px;
+        width: 30px;
+        height: 20px;
+    }
+    .histoText{
+        margin-left: 20px;
+        font-size:50%;
+        font-weight: bold;
+    }
+    .invis{
+        color: #e9eff1;
+        margin-left: 20px;
+        font-size:50%;
+        font-weight: bold;
+    }
+    td{
+        font-size:80%;
+        text-align: left;
+    }
+
+  </style>
+  <script src="calculate.js"></script>
+</head>
+<body>
+  <div class="area left">
+    <h1 class="title">Lower bounds</h1>
+    <table class="table" id="grade-table">
+        <tr>
+            <td>Max</td>
+            <td><input type="text" value="100.00" onblur="setMax(this)"></td>
+        </tr>
+        <tr>
+            <td>A+</td>
+            <td><input type="text" value="95.00" onblur="handleInput(this,0)"></td>
+        </tr>
+        <tr>
+            <td>A</td>
+            <td><input type="text" value="90.00" onblur="handleInput(this,1)"></td>
+        </tr>
+        <tr>
+            <td>A-</td>
+            <td><input type="text" value="85.00" onblur="handleInput(this,2)"></td>
+        </tr>
+        <tr>
+            <td>B+</td>
+            <td><input type="text" value="80.00" onblur="handleInput(this,3)"></td>
+        </tr>
+        <tr>
+            <td>B</td>
+            <td><input type="text" value="75.00" onblur="handleInput(this,4)"></td>
+        </tr>
+        <tr>
+            <td>B-</td>
+            <td><input type="text" value="70.00" onblur="handleInput(this,5)"></td>
+        </tr>
+        <tr>
+            <td>C+</td>
+            <td><input type="text" value="65.00" onblur="handleInput(this,6)"></td>
+        </tr>
+        <tr>
+            <td>C</td>
+            <td><input type="text" value="60.00" onblur="handleInput(this,7)"></td>
+        </tr>
+        <tr>
+            <td>C-</td>
+            <td><input type="text" value="55.00" onblur="handleInput(this,8)"></td>
+        </tr>
+        <tr>
+            <td>D</td>
+            <td><input type="text" value="50.00" onblur="handleInput(this,9)"></td>
+        </tr>
+        <tr>
+            <td>F</td>
+            <td><input type="text" value="0.00" onblur="handleInput(this,10)"></td>
+        </tr>
+    </table>
+  </div>
+  
+  <div class="area">
+    <div class="top-right">
+        <div class="top-rl">
+            <h1 class="title">Histogram</h1>
+            <p class="histoText">A+</p>
+            <p class="histoText">A</p>
+            <p class="histoText">A-</p>
+            <p class="histoText">B+</p>
+            <p class="histoText">B</p>
+            <p class="histoText">B-</p>
+            <p class="histoText">C+</p>
+            <p class="histoText">C</p>
+            <p class="histoText">C-</p>
+            <p class="histoText">D</p>
+            <p class="histoText">F</p>
+        </div>
+        <div class="top-rr">
+            <h1 class="title2">Histogram</h1>
+            <p class="histoText" style="color:#e9eff1" id="r0" >|</p>
+            <p class="histoText" style="color:#e9eff1" id="r1" >|</p>
+            <p class="histoText" style="color:#e9eff1" id="r2" >|</p>
+            <p class="histoText" style="color:#e9eff1" id="r3" >|</p>
+            <p class="histoText" style="color:#e9eff1" id="r4" >|</p>
+            <p class="histoText" style="color:#e9eff1" id="r5" >|</p>
+            <p class="histoText" style="color:#e9eff1" id="r6" >|</p>
+            <p class="histoText" style="color:#e9eff1" id="r7" >|</p>
+            <p class="histoText" style="color:#e9eff1" id="r8" >|</p>
+            <p class="histoText" style="color:#e9eff1" id="r9" >|</p>
+            <p class="histoText" style="color:#e9eff1" id="r10" >|</p>
+            <!-- <p class="histoText" style="color:#e9eff1" id="r11" >|</p> -->
+        </div>
+    </div>
+
+    <div class="bottom-right">
+        <!-- <form onsubmit="handleSubmit()" action="#">
+            <label for="lname">New Grade:</label>
+            <input class ="newGrade" type="text" id="newGrade">
+            <br>
+            <br>
+            <input type="submit">
+          </form>  -->
+          <label for="lname">New Grade:</label>
+            <input class ="newGrade" type="text" id="newGrade" onblur="handleSubmit()">
+    </div>
+  </div>
+  
+  
+</body>
+</html>
